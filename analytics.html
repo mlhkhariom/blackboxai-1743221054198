@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- Analytics Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-white">Analytics Dashboard</h1>
+            <p class="text-gray-400 mt-1">Track your video performance and audience engagement</p>
+        </div>
+        <div class="flex space-x-4">
+            <select class="bg-gray-800/50 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last year</option>
+            </select>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                <i class="fas fa-download mr-2"></i>
+                Export Data
+            </button>
+        </div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Views</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">124.5K</h3>
+                </div>
+                <div class="text-blue-500 bg-blue-500/20 p-3 rounded-lg">
+                    <i class="fas fa-eye text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center mt-4 text-sm">
+                <span class="text-green-500 mr-2">
+                    <i class="fas fa-arrow-up"></i>
+                    12.5%
+                </span>
+                <span class="text-gray-400">vs last period</span>
+            </div>
+        </div>
+
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Watch Time</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">2.8K hrs</h3>
+                </div>
+                <div class="text-purple-500 bg-purple-500/20 p-3 rounded-lg">
+                    <i class="fas fa-clock text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center mt-4 text-sm">
+                <span class="text-green-500 mr-2">
+                    <i class="fas fa-arrow-up"></i>
+                    8.3%
+                </span>
+                <span class="text-gray-400">vs last period</span>
+            </div>
+        </div>
+
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Engagement Rate</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">4.2%</h3>
+                </div>
+                <div class="text-green-500 bg-green-500/20 p-3 rounded-lg">
+                    <i class="fas fa-chart-line text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center mt-4 text-sm">
+                <span class="text-red-500 mr-2">
+                    <i class="fas fa-arrow-down"></i>
+                    2.1%
+                </span>
+                <span class="text-gray-400">vs last period</span>
+            </div>
+        </div>
+
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Avg. Watch Time</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">5:42</h3>
+                </div>
+                <div class="text-yellow-500 bg-yellow-500/20 p-3 rounded-lg">
+                    <i class="fas fa-hourglass-half text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center mt-4 text-sm">
+                <span class="text-green-500 mr-2">
+                    <i class="fas fa-arrow-up"></i>
+                    1.2%
+                </span>
+                <span class="text-gray-400">vs last period</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Views Over Time -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Views Over Time</h3>
+            <canvas id="viewsChart" height="300"></canvas>
+        </div>
+
+        <!-- Audience Retention -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Audience Retention</h3>
+            <canvas id="retentionChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Top Videos Table -->
+    <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-white">Top Performing Videos</h3>
+            <button class="text-blue-500 hover:text-blue-400 transition">
+                View All
+                <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left text-gray-400 text-sm">
+                        <th class="pb-4">Video</th>
+                        <th class="pb-4">Views</th>
+                        <th class="pb-4">Watch Time</th>
+                        <th class="pb-4">Engagement</th>
+                        <th class="pb-4">Published</th>
+                    </tr>
+                </thead>
+                <tbody class="text-white">
+                    <!-- Table rows will be dynamically added -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Charts
+        const viewsCtx = document.getElementById('viewsChart').getContext('2d');
+        const retentionCtx = document.getElementById('retentionChart').getContext('2d');
+
+        // Views Chart
+        new Chart(viewsCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 30}, (_, i) => `Day ${i + 1}`),
+                datasets: [{
+                    label: 'Views',
+                    data: Array.from({length: 30}, () => Math.floor(Math.random() * 5000) + 1000),
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9CA3AF'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#9CA3AF',
+                            maxRotation: 0
+                        }
+                    }
+                }
+            }
+        });
+
+        // Retention Chart
+        new Chart(retentionCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 10}, (_, i) => `${i * 10}%`),
+                datasets: [{
+                    label: 'Retention',
+                    data: Array.from({length: 10}, (_, i) => 100 - (i * 8) - Math.random() * 5),
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9CA3AF'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#9CA3AF'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Generate sample table data
+        const tableBody = document.querySelector('tbody');
+        const videos = [
+            {
+                title: 'Getting Started with Video Player',
+                views: '45.2K',
+                watchTime: '1.2K hrs',
+                engagement: '8.5%',
+                published: '2 days ago'
+            },
+            {
+                title: 'Advanced Video Editing Tutorial',
+                views: '32.1K',
+                watchTime: '956 hrs',
+                engagement: '6.2%',
+                published: '5 days ago'
+            },
+            {
+                title: 'Streaming Setup Guide',
+                views: '28.9K',
+                watchTime: '845 hrs',
+                engagement: '7.1%',
+                published: '1 week ago'
+            },
+            {
+                title: 'Content Creation Tips',
+                views: '25.6K',
+                watchTime: '723 hrs',
+                engagement: '5.8%',
+                published: '2 weeks ago'
+            }
+        ];
+
+        videos.forEach(video => {
+            const row = document.createElement('tr');
+            row.className = 'border-t border-gray-700';
+            row.innerHTML = `
+                <td class="py-4">
+                    <div class="flex items-center">
+                        <div class="w-32 h-18 bg-gray-700 rounded mr-3"></div>
+                        <span class="font-medium">${video.title}</span>
+                    </div>
+                </td>
+                <td class="py-4">${video.views}</td>
+                <td class="py-4">${video.watchTime}</td>
+                <td class="py-4">${video.engagement}</td>
+                <td class="py-4">${video.published}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>
