@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Encoding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .encoding-progress::-webkit-progress-value {
+            background-color: #3B82F6;
+            border-radius: 9999px;
+        }
+        .encoding-progress::-webkit-progress-bar {
+            background-color: #374151;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- Encoding Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Video Encoding</h1>
+        <p class="text-gray-400 mt-1">Configure encoding settings and manage transcoding jobs</p>
+    </div>
+
+    <!-- Encoding Settings -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Preset Settings -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Encoding Presets</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Codec</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="h264">H.264/AVC</option>
+                        <option value="h265">H.265/HEVC</option>
+                        <option value="vp9">VP9</option>
+                        <option value="av1">AV1</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Preset</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="ultrafast">Ultrafast (Fastest)</option>
+                        <option value="superfast">Superfast</option>
+                        <option value="veryfast">Very Fast</option>
+                        <option value="faster">Faster</option>
+                        <option value="fast">Fast</option>
+                        <option value="medium" selected>Medium (Balanced)</option>
+                        <option value="slow">Slow</option>
+                        <option value="slower">Slower</option>
+                        <option value="veryslow">Very Slow (Best Quality)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Container Format</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="mp4">MP4</option>
+                        <option value="mkv">MKV</option>
+                        <option value="webm">WebM</option>
+                        <option value="mov">MOV</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quality Settings -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Quality Settings</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Resolution</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="4k">3840x2160 (4K)</option>
+                        <option value="2k">2560x1440 (2K)</option>
+                        <option value="1080p" selected>1920x1080 (1080p)</option>
+                        <option value="720p">1280x720 (720p)</option>
+                        <option value="480p">854x480 (480p)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Video Bitrate</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="20000">20 Mbps (4K)</option>
+                        <option value="15000">15 Mbps (2K)</option>
+                        <option value="8000" selected>8 Mbps (1080p)</option>
+                        <option value="5000">5 Mbps (720p)</option>
+                        <option value="2500">2.5 Mbps (480p)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Audio Quality</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="320">320 kbps</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192" selected>192 kbps</option>
+                        <option value="128">128 kbps</option>
+                        <option value="96">96 kbps</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Settings -->
+    <div class="mt-6 bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Advanced Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">Frame Rate</label>
+                <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="60">60 FPS</option>
+                    <option value="30" selected>30 FPS</option>
+                    <option value="24">24 FPS</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">GOP Size</label>
+                <input type="number" value="250" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">Reference Frames</label>
+                <input type="number" value="3" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+    </div>
+
+    <!-- Encoding Queue -->
+    <div class="mt-6 bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Encoding Queue</h2>
+        <div class="space-y-4" id="encodingQueue">
+            <!-- Example Encoding Job -->
+            <div class="bg-gray-700/50 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-film text-blue-500 mr-3"></i>
+                        <div>
+                            <h4 class="text-white font-medium">video_001.mp4</h4>
+                            <p class="text-gray-400 text-sm">1920x1080 → 1280x720</p>
+                        </div>
+                    </div>
+                    <span class="text-yellow-500">Processing</span>
+                </div>
+                <div class="relative pt-1">
+                    <progress class="encoding-progress w-full h-2" value="65" max="100"></progress>
+                    <div class="flex items-center justify-between text-sm mt-1">
+                        <span class="text-gray-400">65%</span>
+                        <span class="text-gray-400">ETA: 2m 30s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-6 flex justify-end space-x-4">
+        <button onclick="resetSettings()" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition">
+            Reset Settings
+        </button>
+        <button onclick="startEncoding()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
+            Start Encoding
+        </button>
+    </div>
+
+    <script>
+        function resetSettings() {
+            // Reset all select elements to their default values
+            document.querySelectorAll('select').forEach(select => {
+                select.value = select.querySelector('option[selected]')?.value || select.options[0].value;
+            });
+            
+            // Reset number inputs
+            document.querySelector('input[type="number"][value="250"]').value = "250";
+            document.querySelector('input[type="number"][value="3"]').value = "3";
+            
+            showToast('Settings reset to defaults');
+        }
+
+        function startEncoding() {
+            const job = createEncodingJob();
+            document.getElementById('encodingQueue').insertBefore(job, document.getElementById('encodingQueue').firstChild);
+            simulateEncoding(job.querySelector('progress'));
+            showToast('Encoding job started');
+        }
+
+        function createEncodingJob() {
+            const div = document.createElement('div');
+            div.className = 'bg-gray-700/50 rounded-lg p-4';
+            div.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-film text-blue-500 mr-3"></i>
+                        <div>
+                            <h4 class="text-white font-medium">New_Video_${Math.random().toString(36).substr(2, 5)}.mp4</h4>
+                            <p class="text-gray-400 text-sm">${document.querySelector('select:nth-child(1)').value}</p>
+                        </div>
+                    </div>
+                    <span class="text-yellow-500">Processing</span>
+                </div>
+                <div class="relative pt-1">
+                    <progress class="encoding-progress w-full h-2" value="0" max="100"></progress>
+                    <div class="flex items-center justify-between text-sm mt-1">
+                        <span class="text-gray-400">0%</span>
+                        <span class="text-gray-400">Starting...</span>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+
+        function simulateEncoding(progressBar) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 2;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    progressBar.parentElement.previousElementSibling.lastElementChild.className = 'text-green-500';
+                    progressBar.parentElement.previousElementSibling.lastElementChild.textContent = 'Complete';
+                }
+                progressBar.value = progress;
+                progressBar.nextElementSibling.firstElementChild.textContent = Math.round(progress) + '%';
+                const eta = Math.ceil((100 - progress) / 2);
+                progressBar.nextElementSibling.lastElementChild.textContent = 
+                    progress < 100 ? `ETA: ${eta}m ${Math.floor(Math.random() * 60)}s` : 'Completed';
+            }, 500);
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
