@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- Streaming Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Streaming</h1>
+        <p class="text-gray-400 mt-1">Configure streaming settings and manage live streams</p>
+    </div>
+
+    <!-- Stream Key and Settings -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Stream Key -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Stream Key</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Stream URL</label>
+                    <div class="flex">
+                        <input type="text" value="rtmp://streaming.example.com/live" readonly class="flex-1 bg-gray-700 text-white rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="copyToClipboard(this.previousElementSibling)" class="bg-gray-600 text-white px-4 rounded-r-lg hover:bg-gray-500 transition">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Stream Key</label>
+                    <div class="flex">
+                        <input type="password" value="live_123456789" readonly class="flex-1 bg-gray-700 text-white rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="togglePassword(this.previousElementSibling)" class="bg-gray-600 text-white px-4 hover:bg-gray-500 transition">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="copyToClipboard(this.previousElementSibling.previousElementSibling)" class="bg-gray-600 text-white px-4 rounded-r-lg hover:bg-gray-500 transition">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="regenerateStreamKey()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Regenerate Stream Key
+                </button>
+            </div>
+        </div>
+
+        <!-- Stream Settings -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Stream Settings</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Quality Preset</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="ultrafast">Ultrafast</option>
+                        <option value="superfast">Superfast</option>
+                        <option value="veryfast">Veryfast</option>
+                        <option value="faster">Faster</option>
+                        <option value="fast">Fast</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="slow">Slow</option>
+                        <option value="slower">Slower</option>
+                        <option value="veryslow">Veryslow</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Video Bitrate</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="2000">2000 Kbps</option>
+                        <option value="3500">3500 Kbps</option>
+                        <option value="5000" selected>5000 Kbps</option>
+                        <option value="6000">6000 Kbps</option>
+                        <option value="8000">8000 Kbps</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Audio Bitrate</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="96">96 Kbps</option>
+                        <option value="128" selected>128 Kbps</option>
+                        <option value="160">160 Kbps</option>
+                        <option value="192">192 Kbps</option>
+                        <option value="256">256 Kbps</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Resolution</label>
+                    <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="1080p">1920x1080 (1080p)</option>
+                        <option value="720p" selected>1280x720 (720p)</option>
+                        <option value="480p">854x480 (480p)</option>
+                        <option value="360p">640x360 (360p)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Stream Status -->
+    <div class="mt-6 bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-white">Live Stream Status</h2>
+            <span class="px-3 py-1 rounded-full text-sm font-medium bg-red-500/20 text-red-500">Offline</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-gray-700/50 rounded-lg p-4">
+                <div class="text-gray-400 text-sm mb-1">Viewers</div>
+                <div class="text-2xl font-semibold text-white">0</div>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-4">
+                <div class="text-gray-400 text-sm mb-1">Stream Health</div>
+                <div class="text-2xl font-semibold text-white">100%</div>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-4">
+                <div class="text-gray-400 text-sm mb-1">Duration</div>
+                <div class="text-2xl font-semibold text-white">00:00:00</div>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-4">
+                <div class="text-gray-400 text-sm mb-1">Data Transfer</div>
+                <div class="text-2xl font-semibold text-white">0 MB</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stream Preview -->
+    <div class="mt-6 bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Stream Preview</h2>
+        <div class="aspect-video bg-black rounded-lg flex items-center justify-center">
+            <div class="text-center">
+                <i class="fas fa-video text-4xl text-gray-600 mb-4"></i>
+                <p class="text-gray-400">Stream preview will appear here when you go live</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(element) {
+            element.select();
+            document.execCommand('copy');
+            showToast('Copied to clipboard!');
+        }
+
+        function togglePassword(element) {
+            const type = element.type === 'password' ? 'text' : 'password';
+            element.type = type;
+            element.nextElementSibling.innerHTML = `<i class="fas fa-${type === 'password' ? 'eye' : 'eye-slash'}"></i>`;
+        }
+
+        function regenerateStreamKey() {
+            const newKey = 'live_' + Math.random().toString(36).substr(2, 9);
+            document.querySelector('input[type="password"]').value = newKey;
+            showToast('Stream key regenerated!');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Simulate stream metrics
+        let isStreaming = false;
+        let duration = 0;
+        let dataTransfer = 0;
+        let viewers = 0;
+
+        function updateMetrics() {
+            if (isStreaming) {
+                duration++;
+                dataTransfer += Math.random() * 0.5;
+                viewers = Math.floor(Math.random() * 10);
+
+                document.querySelector('.text-red-500').className = 'px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-500';
+                document.querySelector('.text-red-500').textContent = 'Live';
+                
+                const hours = Math.floor(duration / 3600);
+                const minutes = Math.floor((duration % 3600) / 60);
+                const seconds = duration % 60;
+                
+                document.querySelectorAll('.text-2xl')[0].textContent = viewers;
+                document.querySelectorAll('.text-2xl')[2].textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                document.querySelectorAll('.text-2xl')[3].textContent = `${Math.floor(dataTransfer)} MB`;
+            }
+        }
+
+        // Toggle streaming simulation
+        document.querySelector('.aspect-video').addEventListener('click', () => {
+            isStreaming = !isStreaming;
+            if (isStreaming) {
+                setInterval(updateMetrics, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
