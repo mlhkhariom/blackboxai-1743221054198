@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library - Video Player</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white font-[Poppins]">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 border-r border-gray-700">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-700">
+                <a href="dashboard.html" class="flex items-center space-x-3">
+                    <i class="fas fa-play-circle text-blue-500 text-2xl"></i>
+                    <span class="text-xl font-semibold">Video Player</span>
+                </a>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="p-4">
+                <div class="space-y-2">
+                    <a href="player.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                        <i class="fas fa-play text-gray-400"></i>
+                        <span>Player</span>
+                    </a>
+                    <a href="playlist.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                        <i class="fas fa-list text-gray-400"></i>
+                        <span>Playlist</span>
+                    </a>
+                    <a href="library.html" class="flex items-center space-x-3 p-2 rounded-lg bg-blue-500/20 border-l-4 border-blue-500">
+                        <i class="fas fa-film text-blue-500"></i>
+                        <span>Library</span>
+                    </a>
+                    <a href="upload.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                        <i class="fas fa-upload text-gray-400"></i>
+                        <span>Upload</span>
+                    </a>
+                    <a href="settings.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                        <i class="fas fa-cog text-gray-400"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+
+                <!-- Advanced Features -->
+                <div class="mt-8">
+                    <h3 class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                        Advanced Features
+                    </h3>
+                    <div class="mt-4 space-y-2">
+                        <a href="streaming.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fas fa-broadcast-tower text-gray-400"></i>
+                            <span>Streaming</span>
+                        </a>
+                        <a href="encoding.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fas fa-code text-gray-400"></i>
+                            <span>Encoding</span>
+                        </a>
+                        <a href="analytics.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fas fa-chart-bar text-gray-400"></i>
+                            <span>Analytics</span>
+                        </a>
+                        <a href="api.html" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fas fa-code-branch text-gray-400"></i>
+                            <span>API</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Menu -->
+            <div class="absolute bottom-0 w-64 p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                        <span class="font-semibold">A</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-gray-400">admin@example.com</p>
+                    </div>
+                    <button onclick="logout()" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-gray-800 border-b border-gray-700 p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold">Video Library</h1>
+                        <p class="text-gray-400 mt-1">Browse and manage your video collection</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search videos..." class="bg-gray-700 text-white px-4 py-2 rounded-lg pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <div class="relative">
+                            <button class="bg-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2">
+                                <span>All Files</span>
+                                <i class="fas fa-chevron-down text-sm"></i>
+                            </button>
+                        </div>
+                        <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg flex items-center space-x-2">
+                            <i class="fas fa-upload"></i>
+                            <span>Import</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Tags -->
+                <div class="flex items-center space-x-2 mt-4">
+                    <button class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm flex items-center space-x-2">
+                        <span>All</span>
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded-full text-sm">
+                        Recently Added
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded-full text-sm">
+                        Most Viewed
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 px-4 py-1 rounded-full text-sm">
+                        Favorites
+                    </button>
+                </div>
+            </header>
+
+            <!-- Video Grid -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Video Card 1 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden group">
+                        <div class="relative aspect-video">
+                            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=500" alt="Video thumbnail" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="bg-blue-500 hover:bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-play text-xl"></i>
+                                </button>
+                            </div>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-sm px-2 py-1 rounded">12:34</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium">Sample Video Title</h3>
+                            <div class="flex items-center justify-between mt-2 text-sm text-gray-400">
+                                <span>Added: Mar 29, 2024</span>
+                                <span>1.2K views</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-4">
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-white">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Card 2 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden group">
+                        <div class="relative aspect-video">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500" alt="Video thumbnail" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="bg-blue-500 hover:bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-play text-xl"></i>
+                                </button>
+                            </div>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-sm px-2 py-1 rounded">8:04</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium">Nature Documentary 1</h3>
+                            <div class="flex items-center justify-between mt-2 text-sm text-gray-400">
+                                <span>Added: Mar 20, 2024</span>
+                                <span>7K views</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-4">
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-white">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more video cards as needed -->
+                </div>
+
+                <!-- Load More -->
+                <div class="mt-8 text-center">
+                    <button class="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded-lg text-sm">
+                        Load More
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
