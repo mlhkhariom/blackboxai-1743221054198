@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Playlist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .playlist-item:hover .play-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- Playlist Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-white">Playlists</h1>
+            <p class="text-gray-400 mt-1">Manage your video collections</p>
+        </div>
+        <button onclick="openCreatePlaylistModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+            <i class="fas fa-plus mr-2"></i>
+            Create Playlist
+        </button>
+    </div>
+
+    <!-- Playlist Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="playlistGrid">
+        <!-- Example Playlist -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl overflow-hidden">
+            <div class="aspect-video bg-black/50 relative group">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition transform hover:scale-105">
+                        <i class="fas fa-play mr-2"></i>Play All
+                    </button>
+                </div>
+                <div class="absolute bottom-4 left-4 right-4">
+                    <h3 class="text-white font-medium">My Favorites</h3>
+                    <p class="text-gray-300 text-sm">12 videos</p>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-list text-blue-500 mr-2"></i>
+                        <span class="text-white">Created: Mar 29, 2024</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-white">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-white">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span>Total Duration: 2h 45m</span>
+                    </div>
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fas fa-film mr-2"></i>
+                        <span>Last updated: 2 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Playlist Modal -->
+    <div id="createPlaylistModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 class="text-xl font-semibold text-white mb-4">Create New Playlist</h3>
+            <form id="createPlaylistForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Playlist Name</label>
+                    <input type="text" id="playlistName" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter playlist name">
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+                    <textarea id="playlistDescription" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Enter playlist description"></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Privacy</label>
+                    <select id="playlistPrivacy" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                        <option value="unlisted">Unlisted</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-2 mt-6">
+                    <button type="button" onclick="closeCreatePlaylistModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">Create Playlist</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Video to Playlist Modal -->
+    <div id="addVideoModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 class="text-xl font-semibold text-white mb-4">Add Video to Playlist</h3>
+            <form id="addVideoForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Video URL</label>
+                    <input type="text" id="videoUrl" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter video URL or paste link">
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Title</label>
+                    <input type="text" id="videoTitle" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter video title">
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+                    <textarea id="videoDescription" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Enter video description"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2 mt-6">
+                    <button type="button" onclick="closeAddVideoModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">Add Video</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function openCreatePlaylistModal() {
+            document.getElementById('createPlaylistModal').classList.remove('hidden');
+            document.getElementById('createPlaylistModal').classList.add('flex');
+        }
+
+        function closeCreatePlaylistModal() {
+            document.getElementById('createPlaylistModal').classList.add('hidden');
+            document.getElementById('createPlaylistModal').classList.remove('flex');
+        }
+
+        function openAddVideoModal() {
+            document.getElementById('addVideoModal').classList.remove('hidden');
+            document.getElementById('addVideoModal').classList.add('flex');
+        }
+
+        function closeAddVideoModal() {
+            document.getElementById('addVideoModal').classList.add('hidden');
+            document.getElementById('addVideoModal').classList.remove('flex');
+        }
+
+        // Form Submissions
+        document.getElementById('createPlaylistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('playlistName').value;
+            const description = document.getElementById('playlistDescription').value;
+            const privacy = document.getElementById('playlistPrivacy').value;
+            
+            // Add playlist to grid
+            addPlaylistToGrid(name, description, privacy);
+            closeCreatePlaylistModal();
+            this.reset();
+        });
+
+        document.getElementById('addVideoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const url = document.getElementById('videoUrl').value;
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            
+            // Add video to playlist
+            addVideoToPlaylist(url, title, description);
+            closeAddVideoModal();
+            this.reset();
+        });
+
+        // Helper Functions
+        function addPlaylistToGrid(name, description, privacy) {
+            const grid = document.getElementById('playlistGrid');
+            const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            const playlistElement = document.createElement('div');
+            playlistElement.className = 'bg-gray-800/50 backdrop-blur-md rounded-xl overflow-hidden';
+            playlistElement.innerHTML = `
+                <div class="aspect-video bg-black/50 relative group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition transform hover:scale-105">
+                            <i class="fas fa-play mr-2"></i>Play All
+                        </button>
+                    </div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-white font-medium">${name}</h3>
+                        <p class="text-gray-300 text-sm">0 videos</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-list text-blue-500 mr-2"></i>
+                            <span class="text-white">Created: ${date}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-gray-400 hover:text-white" onclick="openAddVideoModal()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="text-gray-400 hover:text-white">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-gray-400 hover:text-white" onclick="this.closest('.bg-gray-800\\/50').remove()">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-400 text-sm">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Total Duration: 0m</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 text-sm">
+                            <i class="fas fa-film mr-2"></i>
+                            <span>Last updated: Just now</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            grid.insertBefore(playlistElement, grid.firstChild);
+        }
+
+        function addVideoToPlaylist(url, title, description) {
+            // Implementation for adding video to playlist
+            console.log('Adding video:', { url, title, description });
+        }
+    </script>
+</body>
+</html>
