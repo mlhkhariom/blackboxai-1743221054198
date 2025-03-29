@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Videos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .upload-progress::-webkit-progress-value {
+            background-color: #3B82F6;
+            border-radius: 9999px;
+        }
+        .upload-progress::-webkit-progress-bar {
+            background-color: #374151;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- Upload Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Upload Videos</h1>
+        <p class="text-gray-400 mt-1">Upload videos from your device or import from URL</p>
+    </div>
+
+    <!-- Upload Methods -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- File Upload -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">File Upload</h2>
+            <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center mb-4" id="dropZone">
+                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                <p class="text-gray-300 mb-2">Drag and drop video files here</p>
+                <p class="text-gray-400 text-sm mb-4">or</p>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
+                    Browse Files
+                </button>
+                <input type="file" id="fileInput" class="hidden" multiple accept="video/*">
+                <p class="text-gray-400 text-sm mt-4">Supported formats: MP4, MKV, AVI, MOV, etc.</p>
+            </div>
+
+            <!-- Upload Queue -->
+            <div id="uploadQueue" class="space-y-4">
+                <!-- Example Upload Item -->
+                <div class="bg-gray-700/50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-video text-blue-500 mr-3"></i>
+                            <div>
+                                <h4 class="text-white font-medium">video.mp4</h4>
+                                <p class="text-gray-400 text-sm">32 MB</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="relative pt-1">
+                        <progress class="upload-progress w-full h-2" value="70" max="100"></progress>
+                        <div class="flex items-center justify-between text-sm mt-1">
+                            <span class="text-gray-400">70%</span>
+                            <span class="text-gray-400">2.5 MB/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- URL Import -->
+        <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Import from URL</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Video URL</label>
+                    <input type="text" id="videoUrl" placeholder="Enter video URL or paste link" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Title (optional)</label>
+                    <input type="text" id="videoTitle" placeholder="Enter video title" class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button onclick="importFromUrl()" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                    Import Video
+                </button>
+
+                <!-- Supported Platforms -->
+                <div class="mt-6">
+                    <h3 class="text-white font-medium mb-3">Supported Platforms</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fab fa-youtube text-red-500"></i>
+                            <span>YouTube</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fab fa-vimeo text-blue-400"></i>
+                            <span>Vimeo</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fab fa-dailymotion text-blue-500"></i>
+                            <span>Dailymotion</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-link"></i>
+                            <span>Direct Links</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Settings -->
+    <div class="mt-8 bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Upload Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Privacy -->
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">Privacy</label>
+                <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value="unlisted">Unlisted</option>
+                </select>
+            </div>
+
+            <!-- Quality -->
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">Quality</label>
+                <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="original">Original Quality</option>
+                    <option value="1080p">1080p</option>
+                    <option value="720p">720p</option>
+                    <option value="480p">480p</option>
+                </select>
+            </div>
+
+            <!-- Storage -->
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">Storage</label>
+                <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="local">Local Storage</option>
+                    <option value="r2">Cloudflare R2</option>
+                    <option value="telegram">Telegram</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File Upload Handling
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadQueue = document.getElementById('uploadQueue');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-blue-500');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-blue-500');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-blue-500');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('video/')) {
+                    addToUploadQueue(file);
+                }
+            });
+        }
+
+        function addToUploadQueue(file) {
+            const item = document.createElement('div');
+            item.className = 'bg-gray-700/50 rounded-lg p-4';
+            item.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-video text-blue-500 mr-3"></i>
+                        <div>
+                            <h4 class="text-white font-medium">${file.name}</h4>
+                            <p class="text-gray-400 text-sm">${formatFileSize(file.size)}</p>
+                        </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-white" onclick="this.closest('.bg-gray-700\\/50').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="relative pt-1">
+                    <progress class="upload-progress w-full h-2" value="0" max="100"></progress>
+                    <div class="flex items-center justify-between text-sm mt-1">
+                        <span class="text-gray-400">0%</span>
+                        <span class="text-gray-400">Waiting...</span>
+                    </div>
+                </div>
+            `;
+            uploadQueue.appendChild(item);
+            simulateUpload(item.querySelector('progress'));
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function simulateUpload(progressBar) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressBar.value = progress;
+                progressBar.nextElementSibling.firstElementChild.textContent = Math.round(progress) + '%';
+                progressBar.nextElementSibling.lastElementChild.textContent = 
+                    progress < 100 ? (Math.random() * 5).toFixed(1) + ' MB/s' : 'Complete';
+            }, 500);
+        }
+
+        // URL Import
+        function importFromUrl() {
+            const url = document.getElementById('videoUrl').value;
+            const title = document.getElementById('videoTitle').value;
+            if (url) {
+                // Add to upload queue with URL
+                const item = document.createElement('div');
+                item.className = 'bg-gray-700/50 rounded-lg p-4';
+                item.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-link text-blue-500 mr-3"></i>
+                            <div>
+                                <h4 class="text-white font-medium">${title || 'Imported Video'}</h4>
+                                <p class="text-gray-400 text-sm">${url}</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-white" onclick="this.closest('.bg-gray-700\\/50').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="relative pt-1">
+                        <progress class="upload-progress w-full h-2" value="0" max="100"></progress>
+                        <div class="flex items-center justify-between text-sm mt-1">
+                            <span class="text-gray-400">0%</span>
+                            <span class="text-gray-400">Fetching...</span>
+                        </div>
+                    </div>
+                `;
+                uploadQueue.appendChild(item);
+                simulateUpload(item.querySelector('progress'));
+                
+                // Clear input fields
+                document.getElementById('videoUrl').value = '';
+                document.getElementById('videoTitle').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
