@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .code-block {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-6">
+    <!-- API Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-white">API Documentation</h1>
+            <p class="text-gray-400 mt-1">Integrate video functionality into your applications</p>
+        </div>
+        <div class="flex space-x-4">
+            <button onclick="generateApiKey()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                <i class="fas fa-key mr-2"></i>
+                Generate API Key
+            </button>
+        </div>
+    </div>
+
+    <!-- API Key Management -->
+    <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6 mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4">API Keys</h2>
+        <div class="space-y-4">
+            <div class="flex items-center space-x-4">
+                <input type="text" id="apiKey" value="••••••••••••••••" readonly class="flex-1 bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="toggleApiKey()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button onclick="copyApiKey()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <p class="text-gray-400 text-sm">Last used: 2 hours ago · Created: Mar 29, 2024</p>
+        </div>
+    </div>
+
+    <!-- API Documentation -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Sidebar Navigation -->
+        <div class="lg:col-span-1">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-xl p-4">
+                <h3 class="text-white font-medium mb-4">API Reference</h3>
+                <nav class="space-y-2">
+                    <a href="#authentication" class="block text-blue-500 hover:text-blue-400 transition py-2">Authentication</a>
+                    <a href="#videos" class="block text-gray-400 hover:text-white transition py-2">Videos</a>
+                    <a href="#playlists" class="block text-gray-400 hover:text-white transition py-2">Playlists</a>
+                    <a href="#streaming" class="block text-gray-400 hover:text-white transition py-2">Streaming</a>
+                    <a href="#analytics" class="block text-gray-400 hover:text-white transition py-2">Analytics</a>
+                    <a href="#webhooks" class="block text-gray-400 hover:text-white transition py-2">Webhooks</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- API Content -->
+        <div class="lg:col-span-3 space-y-6">
+            <!-- Authentication -->
+            <div id="authentication" class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Authentication</h2>
+                <p class="text-gray-400 mb-4">
+                    Authentication is performed using API keys. Include your API key in the Authorization header of your requests.
+                </p>
+                <div class="bg-gray-700/50 rounded-lg p-4">
+                    <code class="text-green-400 code-block">
+                        Authorization: Bearer your_api_key_here
+                    </code>
+                </div>
+            </div>
+
+            <!-- Videos API -->
+            <div id="videos" class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Videos</h2>
+                
+                <!-- Upload Video -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-white mb-2">Upload Video</h3>
+                    <p class="text-gray-400 mb-4">Upload a new video file to the platform.</p>
+                    <div class="bg-gray-700/50 rounded-lg p-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-blue-400">POST</span>
+                            <span class="text-gray-400">/api/v1/videos/upload</span>
+                        </div>
+                        <pre class="text-gray-400 code-block mt-4">
+{
+    "title": "My Video",
+    "description": "Video description",
+    "privacy": "public",
+    "file": "multipart/form-data"
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Get Video -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-white mb-2">Get Video</h3>
+                    <p class="text-gray-400 mb-4">Retrieve video information by ID.</p>
+                    <div class="bg-gray-700/50 rounded-lg p-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-green-400">GET</span>
+                            <span class="text-gray-400">/api/v1/videos/{video_id}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playlists API -->
+            <div id="playlists" class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Playlists</h2>
+                
+                <!-- Create Playlist -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-white mb-2">Create Playlist</h3>
+                    <p class="text-gray-400 mb-4">Create a new playlist.</p>
+                    <div class="bg-gray-700/50 rounded-lg p-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-blue-400">POST</span>
+                            <span class="text-gray-400">/api/v1/playlists</span>
+                        </div>
+                        <pre class="text-gray-400 code-block mt-4">
+{
+    "name": "My Playlist",
+    "description": "Playlist description",
+    "privacy": "public"
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streaming API -->
+            <div id="streaming" class="bg-gray-800/50 backdrop-blur-md rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Streaming</h2>
+                
+                <!-- Get Stream Key -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-white mb-2">Get Stream Key</h3>
+                    <p class="text-gray-400 mb-4">Retrieve streaming credentials.</p>
+                    <div class="bg-gray-700/50 rounded-lg p-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-green-400">GET</span>
+                            <span class="text-gray-400">/api/v1/streaming/key</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let apiKeyVisible = false;
+        const apiKey = 'sk_live_12345678901234567890';
+
+        function toggleApiKey() {
+            const apiKeyInput = document.getElementById('apiKey');
+            const eyeIcon = document.querySelector('.fa-eye');
+            
+            if (apiKeyVisible) {
+                apiKeyInput.value = '••••••••••••••••';
+                eyeIcon.className = 'fas fa-eye';
+            } else {
+                apiKeyInput.value = apiKey;
+                eyeIcon.className = 'fas fa-eye-slash';
+            }
+            
+            apiKeyVisible = !apiKeyVisible;
+        }
+
+        function copyApiKey() {
+            const apiKeyInput = document.getElementById('apiKey');
+            const originalValue = apiKeyInput.value;
+            
+            apiKeyInput.value = apiKey;
+            apiKeyInput.select();
+            document.execCommand('copy');
+            apiKeyInput.value = originalValue;
+            
+            showToast('API key copied to clipboard');
+        }
+
+        function generateApiKey() {
+            const newKey = 'sk_live_' + Array.from({length: 24}, () => 
+                Math.floor(Math.random() * 36).toString(36)
+            ).join('');
+            
+            showToast('New API key generated');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Handle navigation highlighting
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('nav a').forEach(a => {
+                    a.className = 'block text-gray-400 hover:text-white transition py-2';
+                });
+                link.className = 'block text-blue-500 hover:text-blue-400 transition py-2';
+            });
+        });
+    </script>
+</body>
+</html>
